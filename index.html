@@ -5338,21 +5338,21 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
             }
 
             createStartButton() {
-                // Check if this is a special banner (728x90 or 160x600)
+                // Check if this is a special banner (1200x20 or 160x600)
                 const containerWidth = window.innerWidth || document.documentElement.clientWidth;
                 const containerHeight = window.innerHeight || document.documentElement.clientHeight;
                 
-                const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                const is1200x20 = Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
 
                 // Banner type specific button sizes
                 let baseWidth, baseHeight, baseFontSize;
                 
-                if (is728x90) {
-                    // 728x90 horizontal banner: wide, very short button
+                if (is1200x20) {
+                    // 1200x20 horizontal banner: wide, very short button
                     baseWidth = 120;
-                    baseHeight = 30;
-                    baseFontSize = 14;
+                    baseHeight = 15;
+                    baseFontSize = 12;
                 } else if (is160x600) {
                     // 160x600 vertical banner: narrow, tall button
                     baseWidth = 100;
@@ -5450,14 +5450,15 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
             createScoreText() {
                 this.scoreContainer = new PIXI.Container();
 
-                // Check if this is a special banner (728x90 or 160x600)
+                // Check if this is a special banner (1200x20 or 160x600)
                 const containerWidth = window.innerWidth || document.documentElement.clientWidth;
                 const containerHeight = window.innerHeight || document.documentElement.clientHeight;
                 
-                const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                const is1200x20 = Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
 
-                if (is728x90) {
+                if (is1200x20) {
+                    // 1200x20: Score yan yana, ortalanmış
                     const scoreStyle = {
                         fontFamily: 'Arial, sans-serif',
                         fontSize: 12,
@@ -5471,22 +5472,19 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                         text: 'Yakalanan Coin: ',
                         style: scoreStyle
                     });
-                    this.scoreLabel.anchor.set(0, 0);
-                    this.scoreLabel.x = 289;
-                    this.scoreLabel.y = 9;
+                    this.scoreLabel.anchor.set(0.5, 0);
+                    this.scoreLabel.x = this.app.screen.width / 2;
+                    this.scoreLabel.y = 4;
 
                     this.scoreValue = new PIXI.Text({
                         text: '0',
                         style: scoreStyle
                     });
                     this.scoreValue.anchor.set(0, 0);
-                    this.scoreValue.x = this.scoreLabel.x + this.scoreLabel.width;
-                    this.scoreValue.y = 9;
-
-                    // Container size: 150x15
-                    this.scoreContainer.width = 150;
-                    this.scoreContainer.height = 15;
+                    this.scoreValue.x = this.scoreLabel.x + this.scoreLabel.width / 2;
+                    this.scoreValue.y = 4;
                 } else if (is160x600) {
+                    // 160x600: Score alt alta, ortalanmış
                     const scoreStyle = {
                         fontFamily: 'Arial, sans-serif',
                         fontSize: 14,
@@ -5500,21 +5498,17 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                         text: 'Yakalanan Coin',
                         style: scoreStyle
                     });
-                    this.scoreLabel.anchor.set(0, 0);
-                    this.scoreLabel.x = 16;
+                    this.scoreLabel.anchor.set(0.5, 0);
+                    this.scoreLabel.x = this.app.screen.width / 2;
                     this.scoreLabel.y = 16;
 
                     this.scoreValue = new PIXI.Text({
                         text: '0',
                         style: scoreStyle
                     });
-                    this.scoreValue.anchor.set(0, 0);
-                    this.scoreValue.x = 16;
+                    this.scoreValue.anchor.set(0.5, 0);
+                    this.scoreValue.x = this.app.screen.width / 2;
                     this.scoreValue.y = this.scoreLabel.y + this.scoreLabel.height + 5;
-
-                    // Container size: 128x77
-                    this.scoreContainer.width = 128;
-                    this.scoreContainer.height = 77;
                 } else {
                     // Default behavior for other sizes (use scale factor)
                     let baseFontSize, baseY, baseSpacing;
@@ -6220,12 +6214,12 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 // Alias kullanarak background'u al
                 const bg = PIXI.Sprite.from('bg');
 
-                // Check if this is a special banner (728x90 or 160x600)
+                // Check if this is a special banner (1200x20 or 160x600)
                 const containerWidth = window.innerWidth || document.documentElement.clientWidth;
                 const containerHeight = window.innerHeight || document.documentElement.clientHeight;
                 
                 const isSpecialBanner = 
-                    (Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10) ||
+                    (Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10) ||
                     (Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10);
 
                 if (isSpecialBanner) {
@@ -6301,11 +6295,11 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 
                 // Banner-specific scale values for optimal readability
                 // Improved scales based on banner type analysis
-                const bannerConfigs = [
-                    { width: 728, height: 90, scale: 0.7 },      // Horizontal banner - increased for better visibility
-                    { width: 160, height: 600, scale: 0.52 },    // Vertical banner - increased for readability
-                    { width: 300, height: 169, scale: 0.65 },    // Small banner - increased for clarity
-                ];
+                    const bannerConfigs = [
+                        { width: 1200, height: 20, scale: 0.7 },     // Horizontal banner - increased for better visibility
+                        { width: 160, height: 600, scale: 0.52 },    // Vertical banner - increased for readability
+                        { width: 300, height: 169, scale: 0.65 },    // Small banner - increased for clarity
+                    ];
                 
                 // Check for exact banner size matches (with 10px tolerance)
                 for (const config of bannerConfigs) {
@@ -6361,11 +6355,11 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 } else if (isSpecialBanner) {
                     // For special banners, calculate scale based on actual banner dimensions
                     // These banners fill entire space, so we need to scale elements appropriately
-                    if (Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10) {
-                        // 728x90 horizontal banner: scale based on height for better visibility
-                        // Height is 90px, design height is 1440px
+                    if (Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10) {
+                        // 1200x20 horizontal banner: scale based on height for better visibility
+                        // Height is 20px, design height is 1440px
                         // We want elements to be visible but not too large
-                        this.scaleFactor = 0.12; // Optimized for 728x90 horizontal banner
+                        this.scaleFactor = 0.12; // Optimized for 1200x20 horizontal banner
                     } else if (Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10) {
                         // 160x600 vertical banner: scale based on width for better visibility
                         // Width is 160px, design width is 2560px
@@ -6418,27 +6412,29 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
                     
                     if (is1200x20) {
+                        // 1200x20: Score yan yana, ortalanmış
                         if (this.scoreLabel) {
-                            this.scoreLabel.x = 289;
-                            this.scoreLabel.y = 9;
+                            this.scoreLabel.x = newWidth / 2;
+                            this.scoreLabel.y = 4;
                             this.scoreLabel.style.fontSize = 12;
                             this.scoreLabel.style.strokeThickness = 1;
                         }
                         if (this.scoreValue) {
-                            this.scoreValue.x = this.scoreLabel ? this.scoreLabel.x + this.scoreLabel.width : 289;
-                            this.scoreValue.y = 9;
+                            this.scoreValue.x = this.scoreLabel ? this.scoreLabel.x + this.scoreLabel.width / 2 : newWidth / 2;
+                            this.scoreValue.y = 4;
                             this.scoreValue.style.fontSize = 12;
                             this.scoreValue.style.strokeThickness = 1;
                         }
                     } else if (is160x600) {
+                        // 160x600: Score alt alta, ortalanmış
                         if (this.scoreLabel) {
-                            this.scoreLabel.x = 16;
+                            this.scoreLabel.x = newWidth / 2;
                             this.scoreLabel.y = 16;
                             this.scoreLabel.style.fontSize = 14;
                             this.scoreLabel.style.strokeThickness = 1;
                         }
                         if (this.scoreValue) {
-                            this.scoreValue.x = 16;
+                            this.scoreValue.x = newWidth / 2;
                             this.scoreValue.y = this.scoreLabel ? this.scoreLabel.y + this.scoreLabel.height + 5 : 16;
                             this.scoreValue.style.fontSize = 14;
                             this.scoreValue.style.strokeThickness = 1;
@@ -6477,30 +6473,30 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 }
 
                 // Update existing coins scale for special banners
-                const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                const is1200x20 = Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
                 
                 for (const coin of this.coins) {
                     if (coin) {
-                        if (is728x90) {
-                            // 728x90: Coin 16x16
+                        if (is1200x20) {
+                            // 1200x20: Coin 16x16
                             const targetSize = 16;
                             const texture = coin.textures ? coin.textures[0] : coin.texture;
                             if (texture) {
                                 const coinScale = Math.min(targetSize / texture.width, targetSize / texture.height);
                                 coin.scale.set(coinScale);
                                 coin.radius = targetSize * 0.4;
-                                coin.maxHeight = 9;
+                                coin.maxHeight = 4;
                             }
                         } else if (is160x600) {
-                            // 160x600: Coin 32x32
+                            // 160x600: Coin 32x32, daha yükseğe zıplamalı
                             const targetSize = 32;
                             const texture = coin.textures ? coin.textures[0] : coin.texture;
                             if (texture) {
                                 const coinScale = Math.min(targetSize / texture.width, targetSize / texture.height);
                                 coin.scale.set(coinScale);
                                 coin.radius = targetSize * 0.4;
-                                coin.maxHeight = 120;
+                                coin.maxHeight = 80; // Daha yüksek
                             }
                         } else {
                             // Default behavior for other sizes
@@ -6574,16 +6570,16 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
             }
 
             createTrailParticle(x, y) {
-                // Check if this is a special banner (728x90 or 160x600)
+                // Check if this is a special banner (1200x20 or 160x600)
                 const containerWidth = window.innerWidth || document.documentElement.clientWidth;
                 const containerHeight = window.innerHeight || document.documentElement.clientHeight;
                 
-                const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                const is1200x20 = Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
                 
                 let radius;
-                if (is728x90) {
-                    radius = 3; // Very small for 728x90
+                if (is1200x20) {
+                    radius = 2; // Very small for 1200x20
                 } else if (is160x600) {
                     radius = 4; // Small for 160x600
                 } else {
@@ -6616,42 +6612,42 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
 
                 coin.anchor.set(0.5);
 
-                // Check if this is a special banner (728x90 or 160x600)
+                // Check if this is a special banner (1200x20 or 160x600)
                 const containerWidth = window.innerWidth || document.documentElement.clientWidth;
                 const containerHeight = window.innerHeight || document.documentElement.clientHeight;
                 
-                const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                const is1200x20 = Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
 
-                if (is728x90) {
-                    // 728x90: Coin 16x16
+                if (is1200x20) {
+                    // 1200x20: Coin 16x16
                     const targetSize = 16;
                     const coinScale = Math.min(targetSize / coin.width, targetSize / coin.height);
                     coin.scale.set(coinScale);
-                    coin.maxHeight = 9; // Max y position (coinler y=9'a kadar zıplayabilir)
+                    coin.maxHeight = 4; // Max y position (coinler y=4'e kadar zıplayabilir, 20px canvas için)
                     
                     coin.x = Math.random() * this.app.screen.width;
-                    coin.y = this.app.screen.height + 20; // Spawn from bottom
+                    coin.y = this.app.screen.height + 10; // Spawn from bottom
                     
-                    // Velocity for 90px height banner - coins should reach y=9
+                    // Velocity for 20px height banner - coins should reach y=4
                     coin.vx = (Math.random() - 0.5) * 2;
-                    coin.vy = -(3 + Math.random() * 2); // Smaller velocity for short banner
+                    coin.vy = -(2 + Math.random() * 1); // Very small velocity for very short banner
                     coin.rotationSpeed = (Math.random() - 0.5) * 0.15;
                     
                     coin.radius = targetSize * 0.4;
                 } else if (is160x600) {
-                    // 160x600: Coin 32x32
+                    // 160x600: Coin 32x32, daha yükseğe zıplamalı
                     const targetSize = 32;
                     const coinScale = Math.min(targetSize / coin.width, targetSize / coin.height);
                     coin.scale.set(coinScale);
-                    coin.maxHeight = 120; // Max y position (coinler y=120'ye kadar zıplayabilir)
+                    coin.maxHeight = 80; // Max y position (coinler y=80'e kadar zıplayabilir - daha yüksek)
                     
                     coin.x = Math.random() * this.app.screen.width;
                     coin.y = this.app.screen.height + 30; // Spawn from bottom
                     
-                    // Velocity for 600px height banner - coins should reach y=120
+                    // Velocity for 600px height banner - coins should reach y=80 (daha yüksek)
                     coin.vx = (Math.random() - 0.5) * 3;
-                    coin.vy = -(8 + Math.random() * 4); // Appropriate velocity for taller banner
+                    coin.vy = -(10 + Math.random() * 5); // Increased velocity for higher jump
                     coin.rotationSpeed = (Math.random() - 0.5) * 0.2;
                     
                     coin.radius = targetSize * 0.4;
@@ -6707,14 +6703,14 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     // Check if this is a special banner for gravity
                     const containerWidth = window.innerWidth || document.documentElement.clientWidth;
                     const containerHeight = window.innerHeight || document.documentElement.clientHeight;
-                    const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                    const is1200x20 = Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10;
                     const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
                     
                     let gravity;
-                    if (is728x90) {
-                        gravity = 0.15; // Smaller gravity for short banner
+                    if (is1200x20) {
+                        gravity = 0.1; // Very small gravity for very short banner
                     } else if (is160x600) {
-                        gravity = 0.3; // Moderate gravity for vertical banner
+                        gravity = 0.25; // Reduced gravity for higher jumps
                     } else {
                         // Default gravity
                         const viewportHeight = this.app.screen.height;
@@ -6821,7 +6817,7 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
             /**
              * Calculates viewport size to fit banner dimensions
              * Design size: 2560x1440
-             * For specific banner sizes (728x90, 160x600), fills entire banner without aspect ratio
+             * For specific banner sizes (1200x20, 160x600), fills entire banner without aspect ratio
              * For other sizes, maintains aspect ratio
              */
             const getViewportSize = () => {
@@ -6831,7 +6827,7 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 
                 // Special banner sizes that should fill entire space (no aspect ratio)
                 const specialBanners = [
-                    { width: 728, height: 90 },   // Horizontal banner - fill entire space
+                    { width: 1200, height: 20 },   // Horizontal banner - fill entire space
                     { width: 160, height: 600 },   // Vertical banner - fill entire space
                 ];
                 
@@ -6891,7 +6887,7 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 
                 // Check if this is a special banner that fills entire space
                 const specialBanners = [
-                    { width: 728, height: 90 },
+                    { width: 1200, height: 20 },
                     { width: 160, height: 600 },
                 ];
                 
