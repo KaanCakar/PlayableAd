@@ -7131,17 +7131,20 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
             // Initial canvas style setup
             updateCanvasStyle();
 
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    requestAnimationFrame(handleResize);
-                }, 50);
-            });
+            // Disable auto resize on mobile devices for banner view
+            if (!isMobileDevice) {
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
+                        requestAnimationFrame(handleResize);
+                    }, 50);
+                });
 
-            window.addEventListener('orientationchange', () => {
-                setTimeout(handleResize, 100);
-            });
+                window.addEventListener('orientationchange', () => {
+                    setTimeout(handleResize, 100);
+                });
+            }
 
             setTimeout(handleResize, 10);
 
