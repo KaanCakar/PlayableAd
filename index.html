@@ -7016,19 +7016,21 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
             /**
              * Calculates viewport size to fit banner dimensions
              * Design size: 2560x1440
-             * On mobile: Always use 1440x2560 (vertical portrait)
+             * On mobile: Maintains aspect ratio (2560:1440) - vertical portrait
              * For specific banner sizes (1200x20, 160x600), fills entire banner without aspect ratio
              * For other sizes, maintains aspect ratio
              */
             const getViewportSize = () => {
-                // On mobile devices, always use 1440x2560 (vertical portrait)
-                if (isMobileDevice) {
-                    return { width: 1440, height: 2560 };
-                }
-                
-                // Get actual banner/container dimensions
                 const containerWidth = window.innerWidth || document.documentElement.clientWidth;
                 const containerHeight = window.innerHeight || document.documentElement.clientHeight;
+                
+                // On mobile devices, maintain aspect ratio (2560:1440)
+                if (isMobileDevice) {
+                    const aspectRatio = 2560 / 1440;
+                    const viewportWidth = Math.min(containerWidth, containerHeight / aspectRatio);
+                    const viewportHeight = viewportWidth * aspectRatio;
+                    return { width: viewportWidth, height: viewportHeight };
+                }
                 
                 // Special banner sizes that should fill entire space (no aspect ratio)
                 const specialBanners = [
