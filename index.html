@@ -5457,62 +5457,107 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
 
-                // Banner type specific font sizes for better readability
-                let baseFontSize, baseY, baseSpacing;
-                
                 if (is728x90) {
-                    // 728x90 horizontal banner: very compact, small fonts
-                    baseFontSize = 14;
-                    baseY = 5;
-                    baseSpacing = 2;
+                    const scoreStyle = {
+                        fontFamily: 'Arial, sans-serif',
+                        fontSize: 12,
+                        fill: 0xFFFFFF,
+                        fontWeight: 'bold',
+                        stroke: 0x000000,
+                        strokeThickness: 1
+                    };
+
+                    this.scoreLabel = new PIXI.Text({
+                        text: 'Yakalanan Coin: ',
+                        style: scoreStyle
+                    });
+                    this.scoreLabel.anchor.set(0, 0);
+                    this.scoreLabel.x = 289;
+                    this.scoreLabel.y = 9;
+
+                    this.scoreValue = new PIXI.Text({
+                        text: '0',
+                        style: scoreStyle
+                    });
+                    this.scoreValue.anchor.set(0, 0);
+                    this.scoreValue.x = this.scoreLabel.x + this.scoreLabel.width;
+                    this.scoreValue.y = 9;
+
+                    // Container size: 150x15
+                    this.scoreContainer.width = 150;
+                    this.scoreContainer.height = 15;
                 } else if (is160x600) {
-                    // 160x600 vertical banner: compact but readable
-                    baseFontSize = 16;
-                    baseY = 10;
-                    baseSpacing = 4;
-                } else if (this.bannerType === 'horizontal') {
-                    // Other horizontal banners
-                    baseFontSize = 24;
-                    baseY = 15;
-                    baseSpacing = 5;
-                } else if (this.bannerType === 'vertical') {
-                    // Other vertical banners
-                    baseFontSize = 28;
-                    baseY = 25;
-                    baseSpacing = 8;
+                    const scoreStyle = {
+                        fontFamily: 'Arial, sans-serif',
+                        fontSize: 14,
+                        fill: 0xFFFFFF,
+                        fontWeight: 'bold',
+                        stroke: 0x000000,
+                        strokeThickness: 1
+                    };
+
+                    this.scoreLabel = new PIXI.Text({
+                        text: 'Yakalanan Coin',
+                        style: scoreStyle
+                    });
+                    this.scoreLabel.anchor.set(0, 0);
+                    this.scoreLabel.x = 16;
+                    this.scoreLabel.y = 16;
+
+                    this.scoreValue = new PIXI.Text({
+                        text: '0',
+                        style: scoreStyle
+                    });
+                    this.scoreValue.anchor.set(0, 0);
+                    this.scoreValue.x = 16;
+                    this.scoreValue.y = this.scoreLabel.y + this.scoreLabel.height + 5;
+
+                    // Container size: 128x77
+                    this.scoreContainer.width = 128;
+                    this.scoreContainer.height = 77;
                 } else {
-                    // Default for square/fullscreen
-                    baseFontSize = 32;
-                    baseY = 20;
-                    baseSpacing = 10;
+                    // Default behavior for other sizes (use scale factor)
+                    let baseFontSize, baseY, baseSpacing;
+                    
+                    if (this.bannerType === 'horizontal') {
+                        baseFontSize = 24;
+                        baseY = 15;
+                        baseSpacing = 5;
+                    } else if (this.bannerType === 'vertical') {
+                        baseFontSize = 28;
+                        baseY = 25;
+                        baseSpacing = 8;
+                    } else {
+                        baseFontSize = 32;
+                        baseY = 20;
+                        baseSpacing = 10;
+                    }
+
+                    const scoreStyle = {
+                        fontFamily: 'Arial, sans-serif',
+                        fontSize: baseFontSize * this.scaleFactor,
+                        fill: 0xFFFFFF,
+                        fontWeight: 'bold',
+                        stroke: 0x000000,
+                        strokeThickness: 2 * this.scaleFactor
+                    };
+
+                    this.scoreLabel = new PIXI.Text({
+                        text: 'Yakalanan Coin',
+                        style: scoreStyle
+                    });
+                    this.scoreLabel.anchor.set(0.5, 0);
+                    this.scoreLabel.x = this.app.screen.width / 2;
+                    this.scoreLabel.y = baseY * this.scaleFactor;
+
+                    this.scoreValue = new PIXI.Text({
+                        text: '0',
+                        style: scoreStyle
+                    });
+                    this.scoreValue.anchor.set(0.5, 0);
+                    this.scoreValue.x = this.app.screen.width / 2;
+                    this.scoreValue.y = this.scoreLabel.y + this.scoreLabel.height + baseSpacing * this.scaleFactor;
                 }
-
-                const baseStrokeThickness = 2;
-
-                const scoreStyle = {
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: baseFontSize * this.scaleFactor,
-                    fill: 0xFFFFFF,
-                    fontWeight: 'bold',
-                    stroke: 0x000000,
-                    strokeThickness: baseStrokeThickness * this.scaleFactor
-                };
-
-                this.scoreLabel = new PIXI.Text({
-                    text: 'Yakalanan Coin',
-                    style: scoreStyle
-                });
-                this.scoreLabel.anchor.set(0.5, 0);
-                this.scoreLabel.x = this.app.screen.width / 2;
-                this.scoreLabel.y = baseY * this.scaleFactor;
-
-                this.scoreValue = new PIXI.Text({
-                    text: '0',
-                    style: scoreStyle
-                });
-                this.scoreValue.anchor.set(0.5, 0);
-                this.scoreValue.x = this.app.screen.width / 2;
-                this.scoreValue.y = this.scoreLabel.y + this.scoreLabel.height + baseSpacing * this.scaleFactor;
 
                 this.scoreContainer.addChild(this.scoreLabel);
                 this.scoreContainer.addChild(this.scoreValue);
@@ -6372,71 +6417,112 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
                     const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
                     
-                    let baseFontSize, baseY, baseSpacing;
-                    
                     if (is728x90) {
-                        baseFontSize = 14;
-                        baseY = 5;
-                        baseSpacing = 2;
+                        // 728x90: Score yan yana, pozisyon (289, 9)
+                        if (this.scoreLabel) {
+                            this.scoreLabel.x = 289;
+                            this.scoreLabel.y = 9;
+                            this.scoreLabel.style.fontSize = 12;
+                            this.scoreLabel.style.strokeThickness = 1;
+                        }
+                        if (this.scoreValue) {
+                            this.scoreValue.x = this.scoreLabel ? this.scoreLabel.x + this.scoreLabel.width : 289;
+                            this.scoreValue.y = 9;
+                            this.scoreValue.style.fontSize = 12;
+                            this.scoreValue.style.strokeThickness = 1;
+                        }
                     } else if (is160x600) {
-                        baseFontSize = 16;
-                        baseY = 10;
-                        baseSpacing = 4;
-                    } else if (this.bannerType === 'horizontal') {
-                        baseFontSize = 24;
-                        baseY = 15;
-                        baseSpacing = 5;
-                    } else if (this.bannerType === 'vertical') {
-                        baseFontSize = 28;
-                        baseY = 25;
-                        baseSpacing = 8;
+                        // 160x600: Score alt alta, pozisyon (16, 16)
+                        if (this.scoreLabel) {
+                            this.scoreLabel.x = 16;
+                            this.scoreLabel.y = 16;
+                            this.scoreLabel.style.fontSize = 14;
+                            this.scoreLabel.style.strokeThickness = 1;
+                        }
+                        if (this.scoreValue) {
+                            this.scoreValue.x = 16;
+                            this.scoreValue.y = this.scoreLabel ? this.scoreLabel.y + this.scoreLabel.height + 5 : 16;
+                            this.scoreValue.style.fontSize = 14;
+                            this.scoreValue.style.strokeThickness = 1;
+                        }
                     } else {
-                        baseFontSize = 32;
-                        baseY = 20;
-                        baseSpacing = 10;
-                    }
-                    
-                    if (this.scoreLabel) {
-                        this.scoreLabel.x = newWidth / 2;
-                        this.scoreLabel.y = baseY * this.scaleFactor;
-                        this.scoreLabel.style.fontSize = baseFontSize * this.scaleFactor;
-                        this.scoreLabel.style.strokeThickness = 2 * this.scaleFactor;
-                    }
-                    if (this.scoreValue) {
-                        this.scoreValue.x = newWidth / 2;
-                        this.scoreValue.y = (this.scoreLabel ? this.scoreLabel.y + this.scoreLabel.height + baseSpacing * this.scaleFactor : baseY * this.scaleFactor);
-                        this.scoreValue.style.fontSize = baseFontSize * this.scaleFactor;
-                        this.scoreValue.style.strokeThickness = 2 * this.scaleFactor;
+                        // Default behavior for other sizes
+                        let baseFontSize, baseY, baseSpacing;
+                        
+                        if (this.bannerType === 'horizontal') {
+                            baseFontSize = 24;
+                            baseY = 15;
+                            baseSpacing = 5;
+                        } else if (this.bannerType === 'vertical') {
+                            baseFontSize = 28;
+                            baseY = 25;
+                            baseSpacing = 8;
+                        } else {
+                            baseFontSize = 32;
+                            baseY = 20;
+                            baseSpacing = 10;
+                        }
+                        
+                        if (this.scoreLabel) {
+                            this.scoreLabel.x = newWidth / 2;
+                            this.scoreLabel.y = baseY * this.scaleFactor;
+                            this.scoreLabel.style.fontSize = baseFontSize * this.scaleFactor;
+                            this.scoreLabel.style.strokeThickness = 2 * this.scaleFactor;
+                        }
+                        if (this.scoreValue) {
+                            this.scoreValue.x = newWidth / 2;
+                            this.scoreValue.y = (this.scoreLabel ? this.scoreLabel.y + this.scoreLabel.height + baseSpacing * this.scaleFactor : baseY * this.scaleFactor);
+                            this.scoreValue.style.fontSize = baseFontSize * this.scaleFactor;
+                            this.scoreValue.style.strokeThickness = 2 * this.scaleFactor;
+                        }
                     }
                 }
 
-                // Update existing coins scale
+                // Update existing coins scale for special banners
+                const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
+                
                 for (const coin of this.coins) {
                     if (coin) {
-                        const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
-                        const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
-                        
-                        // Recalculate coin scale with new scale factor based on banner type
-                        let baseMaxSize;
                         if (is728x90) {
-                            baseMaxSize = 50;
+                            // 728x90: Coin 16x16
+                            const targetSize = 16;
+                            const texture = coin.textures ? coin.textures[0] : coin.texture;
+                            if (texture) {
+                                const coinScale = Math.min(targetSize / texture.width, targetSize / texture.height);
+                                coin.scale.set(coinScale);
+                                coin.radius = targetSize * 0.4;
+                                coin.maxHeight = 9;
+                            }
                         } else if (is160x600) {
-                            baseMaxSize = 60;
-                        } else if (this.bannerType === 'horizontal') {
-                            baseMaxSize = 80;
-                        } else if (this.bannerType === 'vertical') {
-                            baseMaxSize = 90;
+                            // 160x600: Coin 32x32
+                            const targetSize = 32;
+                            const texture = coin.textures ? coin.textures[0] : coin.texture;
+                            if (texture) {
+                                const coinScale = Math.min(targetSize / texture.width, targetSize / texture.height);
+                                coin.scale.set(coinScale);
+                                coin.radius = targetSize * 0.4;
+                                coin.maxHeight = 120;
+                            }
                         } else {
-                            baseMaxSize = 100;
-                        }
-                        
-                        const maxSize = baseMaxSize * this.scaleFactor;
-                        // Get original texture dimensions from coin's texture
-                        const texture = coin.textures ? coin.textures[0] : coin.texture;
-                        if (texture) {
-                            const coinScale = Math.min(maxSize / texture.width, maxSize / texture.height);
-                            coin.scale.set(coinScale);
-                            coin.radius = Math.max(coin.width, coin.height) * 0.4;
+                            // Default behavior for other sizes
+                            let baseMaxSize;
+                            if (this.bannerType === 'horizontal') {
+                                baseMaxSize = 80;
+                            } else if (this.bannerType === 'vertical') {
+                                baseMaxSize = 90;
+                            } else {
+                                baseMaxSize = 100;
+                            }
+                            
+                            const maxSize = baseMaxSize * this.scaleFactor;
+                            const texture = coin.textures ? coin.textures[0] : coin.texture;
+                            if (texture) {
+                                const coinScale = Math.min(maxSize / texture.width, maxSize / texture.height);
+                                coin.scale.set(coinScale);
+                                coin.radius = Math.max(coin.width, coin.height) * 0.4;
+                                coin.maxHeight = null;
+                            }
                         }
                     }
                 }
@@ -6497,16 +6583,18 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
                 
-                let baseRadius;
-                if (is728x90 || is160x600) {
-                    baseRadius = 6; // Smaller trail particles for special banners
+                let radius;
+                if (is728x90) {
+                    radius = 3; // Very small for 728x90
+                } else if (is160x600) {
+                    radius = 4; // Small for 160x600
                 } else {
-                    baseRadius = 12; // Default size
+                    radius = 12 * this.scaleFactor; // Default scaled size
                 }
                 
                 const particle = new PIXI.Graphics();
                 particle.beginFill(0xFFFF00, 0.9);
-                particle.drawCircle(0, 0, baseRadius * this.scaleFactor);
+                particle.drawCircle(0, 0, radius);
                 particle.endFill();
 
                 particle.x = x;
@@ -6537,45 +6625,68 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
                 const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
 
-                // Base coin size (in design pixels) - adjusted for banner type
-                let baseMaxSize;
                 if (is728x90) {
-                    baseMaxSize = 50; // Very small coins for 728x90
+                    // 728x90: Coin 16x16
+                    const targetSize = 16;
+                    const coinScale = Math.min(targetSize / coin.width, targetSize / coin.height);
+                    coin.scale.set(coinScale);
+                    coin.maxHeight = 9; // Max y position (coinler y=9'a kadar zıplayabilir)
+                    
+                    coin.x = Math.random() * this.app.screen.width;
+                    coin.y = this.app.screen.height + 20; // Spawn from bottom
+                    
+                    // Velocity for 90px height banner - coins should reach y=9
+                    coin.vx = (Math.random() - 0.5) * 2;
+                    coin.vy = -(3 + Math.random() * 2); // Smaller velocity for short banner
+                    coin.rotationSpeed = (Math.random() - 0.5) * 0.15;
+                    
+                    coin.radius = targetSize * 0.4;
                 } else if (is160x600) {
-                    baseMaxSize = 60; // Small coins for 160x600
-                } else if (this.bannerType === 'horizontal') {
-                    baseMaxSize = 80; // Smaller coins for horizontal banner
-                } else if (this.bannerType === 'vertical') {
-                    baseMaxSize = 90; // Slightly smaller for vertical banner
+                    // 160x600: Coin 32x32
+                    const targetSize = 32;
+                    const coinScale = Math.min(targetSize / coin.width, targetSize / coin.height);
+                    coin.scale.set(coinScale);
+                    coin.maxHeight = 120; // Max y position (coinler y=120'ye kadar zıplayabilir)
+                    
+                    coin.x = Math.random() * this.app.screen.width;
+                    coin.y = this.app.screen.height + 30; // Spawn from bottom
+                    
+                    // Velocity for 600px height banner - coins should reach y=120
+                    coin.vx = (Math.random() - 0.5) * 3;
+                    coin.vy = -(8 + Math.random() * 4); // Appropriate velocity for taller banner
+                    coin.rotationSpeed = (Math.random() - 0.5) * 0.2;
+                    
+                    coin.radius = targetSize * 0.4;
                 } else {
-                    baseMaxSize = 100; // Default size for fullscreen/square
+                    // Default behavior for other sizes (use scale factor)
+                    let baseMaxSize;
+                    if (this.bannerType === 'horizontal') {
+                        baseMaxSize = 80;
+                    } else if (this.bannerType === 'vertical') {
+                        baseMaxSize = 90;
+                    } else {
+                        baseMaxSize = 100;
+                    }
+                    
+                    const maxSize = baseMaxSize * this.scaleFactor;
+                    const coinScale = Math.min(maxSize / coin.width, maxSize / coin.height);
+                    coin.scale.set(coinScale);
+                    coin.maxHeight = null; // No limit for default behavior
+                    
+                    coin.x = Math.random() * this.app.screen.width;
+                    coin.y = this.app.screen.height + 50 * this.scaleFactor;
+                    
+                    const viewportHeight = this.app.screen.height;
+                    const velocityScale = viewportHeight / this.DESIGN_HEIGHT;
+                    const baseVx = (Math.random() - 0.5) * 5;
+                    const baseVy = -(18 + Math.random() * 6);
+                    
+                    coin.vx = baseVx * velocityScale;
+                    coin.vy = baseVy * velocityScale;
+                    coin.rotationSpeed = (Math.random() - 0.5) * 0.2;
+                    
+                    coin.radius = Math.max(coin.width, coin.height) * 0.4;
                 }
-                
-                // Scale coin size based on scale factor (only for banners)
-                const maxSize = baseMaxSize * this.scaleFactor;
-                const coinScale = Math.min(maxSize / coin.width, maxSize / coin.height);
-                coin.originalBaseScale = coinScale; // Store for resize updates
-                coin.scale.set(coinScale);
-
-                coin.x = Math.random() * this.app.screen.width;
-                coin.y = this.app.screen.height + 50 * this.scaleFactor;
-
-                // Velocity should be based on viewport height, not scale factor
-                // Base velocity values for design height (1440px)
-                const baseVx = (Math.random() - 0.5) * 5;
-                const baseVy = -(18 + Math.random() * 6);
-                
-                // Scale velocity relative to viewport height, not scale factor
-                // This ensures coins can reach the screen properly
-                const viewportHeight = this.app.screen.height;
-                const velocityScale = viewportHeight / this.DESIGN_HEIGHT;
-                
-                coin.vx = baseVx * velocityScale;
-                coin.vy = baseVy * velocityScale;
-                coin.rotationSpeed = (Math.random() - 0.5) * 0.2;
-
-                // Calculate radius after scaling
-                coin.radius = Math.max(coin.width, coin.height) * 0.4;
 
                 this.app.stage.addChild(coin);
                 this.coins.push(coin);
@@ -6594,14 +6705,36 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     const coin = this.coins[i];
 
                     coin.x += coin.vx * delta;
-                    // Scale gravity based on viewport height for consistent physics
-                    const viewportHeight = this.app.screen.height;
-                    const gravityScale = viewportHeight / this.DESIGN_HEIGHT;
-                    const baseGravity = 0.45;
+                    
+                    // Check if this is a special banner for gravity
+                    const containerWidth = window.innerWidth || document.documentElement.clientWidth;
+                    const containerHeight = window.innerHeight || document.documentElement.clientHeight;
+                    const is728x90 = Math.abs(containerWidth - 728) <= 10 && Math.abs(containerHeight - 90) <= 10;
+                    const is160x600 = Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10;
+                    
+                    let gravity;
+                    if (is728x90) {
+                        gravity = 0.15; // Smaller gravity for short banner
+                    } else if (is160x600) {
+                        gravity = 0.3; // Moderate gravity for vertical banner
+                    } else {
+                        // Default gravity
+                        const viewportHeight = this.app.screen.height;
+                        const gravityScale = viewportHeight / this.DESIGN_HEIGHT;
+                        gravity = 0.45 * gravityScale;
+                    }
                     
                     coin.y += coin.vy * delta;
-                    coin.vy += baseGravity * gravityScale * delta;
+                    coin.vy += gravity * delta;
                     coin.rotation += coin.rotationSpeed;
+                    
+                    // Enforce max height limit for special banners
+                    if (coin.maxHeight !== undefined && coin.maxHeight !== null) {
+                        if (coin.y < coin.maxHeight) {
+                            coin.y = coin.maxHeight;
+                            coin.vy = 0; // Stop upward movement
+                        }
+                    }
 
                     if (this.checkSlashHit(coin)) {
                         if (coin.stop) coin.stop();
