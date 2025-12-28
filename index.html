@@ -6790,9 +6790,8 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     coin.x = Math.random() * this.app.screen.width;
                     coin.y = this.app.screen.height + 10;
                     
-                    // Velocity for 20px height banner - coins should reach y=4
                     coin.vx = (Math.random() - 0.5) * 2;
-                    coin.vy = -(2 + Math.random() * 1); // Very small velocity for very short banner
+                    coin.vy = -(2 + Math.random() * 1);
                     coin.rotationSpeed = (Math.random() - 0.5) * 0.15;
                     
                     coin.radius = targetSize * 0.4;
@@ -6858,7 +6857,7 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     const maxSize = baseMaxSize * this.scaleFactor;
                     const coinScale = Math.min(maxSize / coin.width, maxSize / coin.height);
                     coin.scale.set(coinScale);
-                    coin.maxHeight = null; // No limit for default behavior
+                    coin.maxHeight = null;
                     
                     coin.x = Math.random() * this.app.screen.width;
                     coin.y = this.app.screen.height + 50 * this.scaleFactor;
@@ -6866,7 +6865,8 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     const viewportHeight = this.app.screen.height;
                     const velocityScale = viewportHeight / this.DESIGN_HEIGHT;
                     const baseVx = (Math.random() - 0.5) * 5;
-                    const baseVy = -(18 + Math.random() * 6);
+                    
+                    const baseVy = this.isMobile ? -(22 + Math.random() * 8) : -(18 + Math.random() * 6);
                     
                     coin.vx = baseVx * velocityScale;
                     coin.vy = baseVy * velocityScale;
@@ -6914,7 +6914,8 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                         // Default gravity
                         const viewportHeight = this.app.screen.height;
                         const gravityScale = viewportHeight / this.DESIGN_HEIGHT;
-                        gravity = 0.45 * gravityScale;
+                        const baseGravity = this.isMobile ? 0.38 : 0.45;
+                        gravity = baseGravity * gravityScale;
                     }
                     
                     coin.y += coin.vy * delta;
