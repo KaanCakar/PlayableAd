@@ -6395,6 +6395,7 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                 // Improved scales based on banner type analysis
                     const bannerConfigs = [
                         { width: 1200, height: 20, scale: 0.7 },     // Horizontal banner - increased for better visibility
+                        { width: 1200, height: 90, scale: 0.55 },   // Top banner - optimized for 90px height
                         { width: 160, height: 600, scale: 0.52 },    // Vertical banner - increased for readability
                         { width: 300, height: 169, scale: 0.65 },    // Small banner - increased for clarity
                     ];
@@ -6457,16 +6458,16 @@ fn setSaturation(c: vec3<f32>, s: f32) -> vec3<f32> {
                     // These banners fill entire space, so we need to scale elements appropriately
                     if (Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 20) <= 10) {
                         // 1200x20 horizontal banner: scale based on height for better visibility
-                        this.scaleFactor = 0.12; // Optimized for 1200x20 horizontal banner
+                        this.scaleFactor = 0.7;
                     } else if (Math.abs(containerWidth - 1200) <= 10 && Math.abs(containerHeight - 90) <= 10) {
                         // 1200x90 top banner: scale based on height for better visibility
-                        this.scaleFactor = 0.12; // Optimized for 1200x90 top banner
+                        this.scaleFactor = 0.55;
                     } else if (Math.abs(containerWidth - 300) <= 10 && Math.abs(containerHeight - 169) <= 10) {
                         // 300x169 right sidebar banner: scale based on dimensions
-                        this.scaleFactor = 0.12; // Optimized for 300x169 right sidebar banner
+                        this.scaleFactor = 0.65;
                     } else if (Math.abs(containerWidth - 160) <= 10 && Math.abs(containerHeight - 600) <= 10) {
                         // 160x600 vertical banner: scale based on width for better visibility
-                        this.scaleFactor = 0.12; // Optimized for 160x600 vertical banner
+                        this.scaleFactor = 0.52;
                         }
                     } else {
                     const bannerConfigs = [
